@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 
 type scrapingArticle = {
     title: string | undefined,
-    authors: string[];
+    authors: { name: string }[];
     PDFUrl: string
 }
 
@@ -42,10 +42,10 @@ export const scrapingScielo = async () => {
                 const title = item.querySelector("strong.title")?.innerHTML;
 
                 const itemAuthorsTags = item.querySelectorAll("a.author");
-                const authors: string[] = [];
+                const authors: { name: string }[] = [];
 
                 itemAuthorsTags.forEach((tag) => {
-                    authors.push(tag.innerHTML);
+                    authors.push({ name: tag.innerHTML });
                 });
 
                 const PDFUrl = item.querySelector("div.line.versions > span:nth-child(5) > a")?.getAttribute("href");

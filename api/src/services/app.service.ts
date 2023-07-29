@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 
 import { Article } from 'src/entities/Article';
-import { scrapingScielo } from 'src/scraping/scielo';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AppService {
-  async getAllArticles(): Promise<Article[]> {
-    const scieloData = await scrapingScielo();
 
-    const articles: Article[] = scieloData.map((data) => new Article(data.title, data.authors, data.PDFUrl));
+  constructor(private prisma: PrismaService) { }
 
-    return articles;
+  async getAllArticles(): Promise<Article[] | void> {
+    const articles = this.prisma.article.findMany()
+
+    console.log(articles);
   }
 }

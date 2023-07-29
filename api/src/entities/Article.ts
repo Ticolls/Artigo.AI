@@ -2,13 +2,13 @@
 
 export class Article {
 
-    private title: string;
-    private authors: string[];
-    private PDFUrl: string;
+    title: string;
+    authors: { name: string }[];
+    pdfUrl: string;
 
-    constructor(title: string, authors: string[], PDFUrl: string) {
+    constructor(title: string, authors: { name: string }[], PDFUrl: string) {
         this.title = title;
         this.authors = authors;
-        this.PDFUrl = PDFUrl;
+        this.pdfUrl = PDFUrl;
     }
 }

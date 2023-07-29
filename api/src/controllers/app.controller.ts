@@ -7,9 +7,8 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get()
-  async getAllArticles(): Promise<Article[]> {
+  async getAllArticles(): Promise<void> {
     const allArticles = await this.appService.getAllArticles();
 
-    return allArticles;
   }
 }
