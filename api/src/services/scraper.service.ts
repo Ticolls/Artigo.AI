@@ -8,14 +8,24 @@ export class ScraperService implements OnModuleInit {
 
     constructor(private prisma: PrismaService) { }
 
-    async scrapScieloArticles(): Promise<void> {
-
+    async scrapArticles(): Promise<void> {
 
         try {
-            const scieloData = await scrapingScielo();
-            const articles: Article[] = scieloData.map((data) => new Article(data.title, data.authors, data.PDFUrl));
+            const articles = await this.prisma.article.findMany({
+                include: {
+                    authors: true
+                }
+            })
 
-            for (const article of articles) {
+            const articleTitles = articles.map(art => art.title);
+
+            const scieloData = await scrapingScielo();
+
+            const scrapedArticles: Article[] = scieloData.map((data) => new Article(data.title, data.authors, data.PDFUrl));
+
+            const newArticles = scrapedArticles.filter(art => !articleTitles.includes(art.title));
+
+            for (const article of newArticles) {
                 await this.prisma.article.create({
                     data: {
                         title: article.title,
@@ -37,9 +47,9 @@ export class ScraperService implements OnModuleInit {
     async onModuleInit() {
         const interval = 1000 * 60 * 60 * 24; // 24 horas | 1 dia
 
-        await this.scrapScieloArticles();
+        await this.scrapArticles();
 
-        setInterval(async () => await this.scrapScieloArticles(), interval);
+        setInterval(async () => await this.scrapArticles(), interval);
     }
 
 }

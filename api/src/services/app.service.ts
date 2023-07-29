@@ -8,9 +8,13 @@ export class AppService {
 
   constructor(private prisma: PrismaService) { }
 
-  async getAllArticles(): Promise<Article[] | void> {
-    const articles = this.prisma.article.findMany()
+  async getAllArticles(): Promise<Article[]> {
+    const articles = await this.prisma.article.findMany({
+      include: {
+        authors: true
+      }
+    })
 
-    console.log(articles);
+    return articles;
   }
 }
