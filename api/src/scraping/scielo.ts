@@ -16,7 +16,6 @@ export const scrapingScielo = async () => {
             "--no-zygote"
         ],
         // executablePath: process.env.NODE_env === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath()
-        executablePath: puppeteer.executablePath()
     });
 
     const page = await browser.newPage();
