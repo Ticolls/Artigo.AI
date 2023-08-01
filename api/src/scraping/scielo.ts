@@ -8,7 +8,7 @@ type scrapingArticle = {
 
 export const scrapingScielo = async () => {
     const browser = await puppeteer.launch({
-        headless: 'new',
+        headless: false,
         args: [
             "--disable-setuid-sandbox",
             "--no-sandbox",
